@@ -14,9 +14,8 @@ extractive_pipe = pipeline(
 )
 answers = []
 print(dataset.values())
-for img in tqdm(dataset['train']['image']):
-    result = extractive_pipe(img.filename, "What is a break lamp bulb fault?")
-    print(result)
-    answers.append(result[0])
+for img in tqdm(dataset['train']['image'][110:120]): #Answer is on page 114
+    result = extractive_pipe(img, "What is the action / description next to the lighting message \"break lamp bulb fault?\"", max_answer_len=50)
+    answers = answers + result if result[0]['answer'] is not None else answers
 answers = sorted(answers, key=lambda s: s['score'], reverse=True)
 print(answers)
